@@ -1,0 +1,507 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Blog Post{% endblock %}
+
+{% block extra_style %}
+<style>
+    .blog-detail {
+        max-width: 1200px;
+        width: 95%;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    .blog-content {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        width: 100%;
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #444;
+    }
+
+    .blog-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+        background: white;
+    }
+
+    .blog-header h1 {
+        font-size: 2.8rem;
+        color: #333;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .blog-meta {
+        color: #666;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .blog-meta a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .blog-meta a:hover {
+        text-decoration: underline;
+    }
+
+    .blog-category {
+        display: inline-block;
+        background: #f8f9fa;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        color: #007bff;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+
+    .blog-category:hover {
+        background: #e9ecef;
+        color: #0056b3;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-body {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #444;
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+
+    .blog-footer {
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background: white !important;
+    }
+
+    .comment-button {
+        display: inline-block;
+        padding: 0.7rem 1.5rem;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        font-size: 1rem;
+    }
+
+    .comment-button:hover {
+        background-color: #0056b3;
+    }
+
+    .comments-section {
+        max-width: 1200px;
+        width: 95%;
+        margin: 0 auto;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .comments-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+        background: white !important;
+    }
+
+    .comments-header h2 {
+        font-size: 2rem;
+        color: #333;
+    }
+
+    .comments-list {
+        list-style: none;
+        padding: 0;
+        width: 100%;
+    }
+
+    .comment-item {
+        padding: 2rem;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+
+    .comment-item:last-child {
+        border-bottom: none;
+    }
+
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+
+    .comment-author {
+        font-weight: bold;
+        color: #333;
+        font-size: 1.1rem;
+    }
+
+    .comment-date {
+        color: #666;
+        font-size: 1rem;
+    }
+
+    .comment-content {
+        color: #444;
+        line-height: 1.7;
+        font-size: 1.1rem;
+    }
+
+    .no-comments {
+        text-align: center;
+        color: #666;
+        padding: 3rem;
+        font-size: 1.2rem;
+    }
+
+    .like-section {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+        width: 100%;
+    }
+
+    .like-button, .dislike-button, .bookmark-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 1rem;
+    }
+
+    .like-button {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .like-button:hover {
+        background-color: #c8e6c9;
+    }
+
+    .like-button.active {
+        background-color: #2e7d32;
+        color: white;
+    }
+
+    .dislike-button {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .dislike-button:hover {
+        background-color: #ffcdd2;
+    }
+
+    .dislike-button.active {
+        background-color: #c62828;
+        color: white;
+    }
+
+    .bookmark-button {
+        background-color: #fff3e0;
+        color: #f57c00;
+    }
+
+    .bookmark-button:hover {
+        background-color: #ffe0b2;
+    }
+
+    .bookmark-button.active {
+        background-color: #f57c00;
+        color: white;
+    }
+
+    .like-count, .dislike-count, .bookmark-count {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .like-section .icon {
+        font-size: 1.4rem;
+    }
+
+    .comment-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .comment-form h3 {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .form-group textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .submit-button {
+        background: #3498db;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .submit-button:hover {
+        background: #2980b9;
+    }
+
+    .login-prompt {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        color: #666;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+        background: white;
+    }
+
+    .pagination a, .pagination span {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        color: #007bff;
+        text-decoration: none;
+        background: white;
+    }
+
+    .pagination a:hover {
+        background: #f8f9fa;
+    }
+
+    .pagination .current {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="blog-detail">
+    <article class="blog-content">
+        <header class="blog-header">
+            <h1>{{ post.title }}</h1>
+            <div class="blog-meta">
+                <span>By <a href="{% url 'author_detail' post.author.slug %}">{{ post.author.name }}</a></span>
+                <span>•</span>
+                <span>{{ post.created_at|date:"F j, Y" }}</span>
+                <span>•</span>
+                <a href="{% url 'blog_list' %}?category={{ post.category }}" class="blog-category">{{ post.category }}</a>
+            </div>
+        </header>
+
+        <div class="blog-body">
+            {{ post.content|linebreaks }}
+        </div>
+
+        <footer class="blog-footer">
+            <div class="like-section">
+                {% if user.is_authenticated %}
+                    <button class="like-button {% if user_like and user_like.is_like %}active{% endif %}" 
+                            onclick="toggleLike('{{ post.slug }}')">
+                        <i class="fas fa-thumbs-up icon"></i>
+                        <span class="like-count">{{ post.like_count }}</span>
+                    </button>
+                    <button class="dislike-button {% if user_like and not user_like.is_like %}active{% endif %}"
+                            onclick="toggleDislike('{{ post.slug }}')">
+                        <i class="fas fa-thumbs-down icon"></i>
+                        <span class="dislike-count">{{ post.dislike_count }}</span>
+                    </button>
+                    <button class="bookmark-button {% if is_bookmarked %}active{% endif %}"
+                            onclick="toggleBookmark('{{ post.slug }}')">
+                        <i class="fas fa-bookmark icon"></i>
+                    </button>
+                {% else %}
+                    <a href="{% url 'login' %}" class="like-button">
+                        <i class="fas fa-thumbs-up icon"></i>
+                        <span class="like-count">{{ post.like_count }}</span>
+                    </a>
+                    <a href="{% url 'login' %}" class="dislike-button">
+                        <i class="fas fa-thumbs-down icon"></i>
+                        <span class="dislike-count">{{ post.dislike_count }}</span>
+                    </a>
+                    <a href="{% url 'login' %}" class="bookmark-button">
+                        <i class="fas fa-bookmark icon"></i>
+                    </a>
+                {% endif %}
+            </div>
+            <a href="#comments" class="comment-button">
+                <i class="fas fa-comments"></i> Add a Comment
+            </a>
+        </footer>
+    </article>
+
+    <section id="comments" class="comments-section">
+        <header class="comments-header">
+            <h2>Comments</h2>
+        </header>
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'add_comment' post.slug %}" class="comment-form">
+                {% csrf_token %}
+                <h3>Add a Comment</h3>
+                <div class="form-group">
+                    <textarea name="content" rows="4" placeholder="Write your comment here..." required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Post Comment</button>
+            </form>
+        {% else %}
+            <div class="login-prompt">
+                <p>Please <a href="{% url 'login' %}">login</a> to leave a comment.</p>
+            </div>
+        {% endif %}
+
+        <ul class="comments-list">
+            {% if comments %}
+                {% for comment in comments %}
+                    <li class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">{{ comment.author.username }}</span>
+                            <span class="comment-date">{{ comment.created_at|date:"F j, Y" }}</span>
+                        </div>
+                        <div class="comment-content">
+                            {{ comment.content|linebreaks }}
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="no-comments">
+                    <p>No comments yet. Be the first to comment!</p>
+                </li>
+            {% endif %}
+        </ul>
+    </section>
+</div>
+
+<script>
+    function toggleLike(slug) {
+        fetch(`/blog/post/${slug}/like/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.like-count').textContent = data.like_count;
+            document.querySelector('.dislike-count').textContent = data.dislike_count;
+            const likeButton = document.querySelector('.like-button');
+            const dislikeButton = document.querySelector('.dislike-button');
+            
+            if (data.is_liked) {
+                likeButton.classList.add('active');
+                dislikeButton.classList.remove('active');
+            } else {
+                likeButton.classList.remove('active');
+            }
+        });
+    }
+
+    function toggleDislike(slug) {
+        fetch(`/blog/post/${slug}/dislike/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.like-count').textContent = data.like_count;
+            document.querySelector('.dislike-count').textContent = data.dislike_count;
+            const likeButton = document.querySelector('.like-button');
+            const dislikeButton = document.querySelector('.dislike-button');
+            
+            if (data.is_disliked) {
+                dislikeButton.classList.add('active');
+                likeButton.classList.remove('active');
+            } else {
+                dislikeButton.classList.remove('active');
+            }
+        });
+    }
+
+    function toggleBookmark(slug) {
+        fetch(`/blog/post/${slug}/bookmark/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const bookmarkButton = document.querySelector('.bookmark-button');
+            if (data.is_bookmarked) {
+                bookmarkButton.classList.add('active');
+            } else {
+                bookmarkButton.classList.remove('active');
+            }
+        });
+    }
+</script>
+{% endblock %} 

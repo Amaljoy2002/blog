@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - Blog Site{% endblock %}
+
+{% block content %}
+<div class="search-results">
+    <h1>Search Results</h1>
+    
+    {% if query %}
+        <p>Search results for "{{ query }}"</p>
+    {% endif %}
+
+    {% if posts %}
+        <div class="blog-list">
+            {% for post in posts %}
+                <article class="blog-card">
+                    <h2><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h2>
+                    <div class="blog-meta">
+                        Posted on {{ post.created_at|date:"F j, Y" }} by 
+                        <a href="{% url 'author_detail' post.author.slug %}">{{ post.author.name }}</a>
+                    </div>
+                    <div class="blog-excerpt">
+                        {{ post.content|truncatewords:50 }}
+                    </div>
+                    <div class="blog-footer">
+                        <span class="category">{{ post.category }}</span>
+                        <a href="{% url 'blog_detail' post.slug %}" class="read-more">Read More</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No posts found matching your search.</p>
+    {% endif %}
+</div>
+
+<style>
+    .search-results {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .search-results h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .search-results p {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    .blog-list {
+        display: grid;
+        gap: 2rem;
+    }
+
+    .blog-card {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-card h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-card h2 a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .blog-card h2 a:hover {
+        color: #007bff;
+    }
+
+    .blog-meta {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-meta a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .blog-excerpt {
+        color: #444;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .blog-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .category {
+        background: #f0f0f0;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .read-more {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .read-more:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %} 

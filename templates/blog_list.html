@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block extra_style %}
+.blog-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.blog-list {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.blog-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.blog-item:last-child {
+    border-bottom: none;
+}
+
+.blog-item h2 {
+    margin-bottom: 0.5rem;
+}
+
+.blog-item h2 a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.blog-item h2 a:hover {
+    color: #3498db;
+}
+
+.blog-meta {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.blog-meta a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.blog-meta a:hover {
+    text-decoration: underline;
+}
+
+.sidebar {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.sidebar h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar ul li a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    color: #3498db;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.pagination a, .pagination span {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.pagination a:hover {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.pagination .current {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+@media (max-width: 768px) {
+    .blog-container {
+        grid-template-columns: 1fr;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<div class="blog-container">
+    <div class="blog-list">
+        <h1>Blog Posts</h1>
+        {% for post in posts %}
+        <article class="blog-item">
+            <h2><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h2>
+            <div class="blog-meta">
+                Posted on {{ post.created_at|date:"F j, Y" }} by 
+                <a href="{% url 'author_detail' post.author.slug %}">{{ post.author.name }}</a>
+            </div>
+        </article>
+        {% empty %}
+        <p>No blog posts found.</p>
+        {% endfor %}
+
+        {% if posts.has_other_pages %}
+        <div class="pagination">
+            {% if posts.has_previous %}
+            <a href="?page={{ posts.previous_page_number }}">&laquo; Previous</a>
+            {% endif %}
+
+            {% for num in posts.paginator.page_range %}
+                {% if posts.number == num %}
+                <span class="current">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <aside class="sidebar">
+        <h3>Categories</h3>
+        <ul>
+            <li><a href="{% url 'blog_list' %}?category=technology">Technology</a></li>
+            <li><a href="{% url 'blog_list' %}?category=lifestyle">Lifestyle</a></li>
+            <li><a href="{% url 'blog_list' %}?category=travel">Travel</a></li>
+            <li><a href="{% url 'blog_list' %}?category=food">Food</a></li>
+        </ul>
+
+        <h3>Recent Posts</h3>
+        <ul>
+            {% for post in recent_posts %}
+            <li><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <h3>Authors</h3>
+        <ul>
+            {% for author in authors %}
+            <li><a href="{% url 'author_detail' author.slug %}">{{ author.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+</div>
+{% endblock %} 

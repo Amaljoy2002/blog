@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ author.name }} - Blog Author{% endblock %}
+
+{% block extra_style %}
+.author-container {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.author-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.author-header h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.author-bio {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.author-meta {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.blog-posts {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.blog-posts h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.post-list {
+    list-style: none;
+}
+
+.post-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.post-item:last-child {
+    border-bottom: none;
+}
+
+.post-item h3 {
+    margin-bottom: 0.5rem;
+}
+
+.post-item h3 a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.post-item h3 a:hover {
+    color: #3498db;
+}
+
+.post-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+{% endblock %}
+
+{% block content %}
+<div class="author-container">
+    <div class="author-header">
+        <h1>{{ author.name }}</h1>
+        <div class="author-bio">
+            {{ author.bio|linebreaks }}
+        </div>
+        <div class="author-meta">
+            Member since {{ author.created_at|date:"F Y" }}
+        </div>
+    </div>
+
+    <div class="blog-posts">
+        <h2>Blog Posts by {{ author.name }}</h2>
+        {% if author_posts %}
+        <ul class="post-list">
+            {% for post in author_posts %}
+            <li class="post-item">
+                <h3><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h3>
+                <div class="post-date">{{ post.created_at|date:"F j, Y" }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No blog posts found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

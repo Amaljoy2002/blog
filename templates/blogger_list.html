@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Bloggers{% endblock %}
+
+{% block header_title %}Our Bloggers{% endblock %}
+
+{% block header_subtitle %}Meet the talented writers behind our blog posts{% endblock %}
+
+{% block extra_style %}
+.blogger-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.blogger-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.blogger-card:hover {
+    transform: translateY(-5px);
+}
+
+.blogger-info {
+    padding: 1.5rem;
+}
+
+.blogger-name {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.blogger-name a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.blogger-name a:hover {
+    color: #3498db;
+}
+
+.blogger-bio {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.blogger-stats {
+    display: flex;
+    gap: 1rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.blogger-stats span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.no-bloggers {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.no-bloggers p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+{% endblock %}
+
+{% block content %}
+{% if authors %}
+    <div class="blogger-grid">
+        {% for author in authors %}
+            <div class="blogger-card">
+                <div class="blogger-info">
+                    <h2 class="blogger-name">
+                        <a href="{% url 'author_detail' author.slug %}">{{ author.name }}</a>
+                    </h2>
+                    <p class="blogger-bio">{{ author.bio|truncatewords:30 }}</p>
+                    <div class="blogger-stats">
+                        <span>Posts: {{ author.blogpost_set.count }}</span>
+                        <span>Member since: {{ author.created_at|date:"F Y" }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="no-bloggers">
+        <h2>No Bloggers Found</h2>
+        <p>We're currently looking for talented writers to join our community.</p>
+        <p>Check back soon for updates!</p>
+    </div>
+{% endif %}
+{% endblock %} 

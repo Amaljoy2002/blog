@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block extra_style %}
+.hero-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.feature-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.categories {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.categories h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.categories ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.categories li {
+    margin-bottom: 1rem;
+}
+
+.categories a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    color: #2c3e50;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+}
+
+.categories a:hover {
+    background: #3498db;
+    color: white;
+    transform: translateX(5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.categories .category-count {
+    float: right;
+    background: #e9ecef;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.categories a:hover .category-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <h2>Discover Interesting Content</h2>
+    <p>Welcome to my personal blog where I share my thoughts, experiences, and insights on various topics. Whether you're looking for inspiration, knowledge, or just an interesting read, you've come to the right place.</p>
+    <a href="/blog/" class="cta-button">Read Blog Posts</a>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <h3>Latest Posts</h3>
+        <p>Stay updated with my most recent articles and thoughts on various topics.</p>
+    </div>
+    <div class="categories">
+        <h3>Categories</h3>
+        <ul>
+            {% for category in categories %}
+                <li>
+                    <a href="{% url 'blog_list' %}?category={{ category }}">
+                        {{ category }}
+                        <span class="category-count">{{ category|lower|cut:" " }}_count</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="feature-card">
+        <h3>About Me</h3>
+        <p>Learn more about who I am and what drives me to write.</p>
+    </div>
+</section>
+{% endblock %}

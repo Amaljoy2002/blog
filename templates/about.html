@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - Blog Site{% endblock %}
+
+{% block extra_style %}
+<style>
+    .about-section {
+        max-width: 1200px;
+        width: 95%;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .about-header h1 {
+        font-size: 2.8rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .about-content {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #444;
+    }
+
+    .about-content p {
+        margin-bottom: 1.5rem;
+    }
+
+    .about-content h2 {
+        font-size: 2rem;
+        color: #333;
+        margin: 2rem 0 1rem;
+    }
+
+    .about-content ul {
+        margin-bottom: 1.5rem;
+        padding-left: 2rem;
+    }
+
+    .about-content li {
+        margin-bottom: 0.5rem;
+    }
+
+    .team-section {
+        margin-top: 3rem;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .team-member {
+        text-align: center;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: transform 0.3s;
+    }
+
+    .team-member:hover {
+        transform: translateY(-5px);
+    }
+
+    .team-member h3 {
+        font-size: 1.4rem;
+        color: #333;
+        margin: 1rem 0 0.5rem;
+    }
+
+    .team-member p {
+        color: #666;
+        font-size: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-section">
+    <div class="about-header">
+        <h1>About Us</h1>
+        <p>Welcome to our blog community!</p>
+    </div>
+
+    <div class="about-content">
+        <p>We are passionate about sharing knowledge, experiences, and insights through our blog platform. Our mission is to create a space where writers and readers can connect, learn, and grow together.</p>
+
+        <h2>Our Mission</h2>
+        <p>To provide a platform that fosters meaningful discussions, promotes learning, and encourages the sharing of diverse perspectives. We believe in the power of community and the importance of open dialogue.</p>
+
+        <h2>What We Offer</h2>
+        <ul>
+            <li>High-quality blog posts from experienced writers</li>
+            <li>Engaging community discussions</li>
+            <li>Diverse topics and perspectives</li>
+            <li>User-friendly interface</li>
+            <li>Interactive features like comments and likes</li>
+        </ul>
+
+        <h2>Our Team</h2>
+        <div class="team-section">
+            <div class="team-grid">
+                <div class="team-member">
+                    <h3>John Doe</h3>
+                    <p>Founder & Editor-in-Chief</p>
+                </div>
+                <div class="team-member">
+                    <h3>Jane Smith</h3>
+                    <p>Content Director</p>
+                </div>
+                <div class="team-member">
+                    <h3>Mike Johnson</h3>
+                    <p>Community Manager</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
