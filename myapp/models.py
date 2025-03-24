@@ -86,9 +86,22 @@ class Bookmark(models.Model):
 
     class Meta:
         unique_together = ('user', 'post')
+        ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.user.username} bookmarked {self.post.title}"
+        return f"{self.user.username}'s bookmark: {self.post.title}"
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'post')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username}'s favorite: {self.post.title}"
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')

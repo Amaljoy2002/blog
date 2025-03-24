@@ -4,37 +4,40 @@
 
 {% block content %}
 <div class="favorites-container">
-    <div class="favorites-header">
-        <h1>My Favorite Posts</h1>
-        <p>Posts you've saved for later reading</p>
-    </div>
+    <header class="favorites-header">
+        <h1><i class="fas fa-bookmark"></i> My Favorite Posts</h1>
+    </header>
 
-    {% if bookmarked_posts %}
+    {% if favorite_posts %}
         <div class="favorites-grid">
-            {% for post in bookmarked_posts %}
+            {% for post in favorite_posts %}
                 <article class="favorite-card">
                     <div class="favorite-content">
-                        <h2><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h2>
+                        <h2 class="favorite-title">
+                            <a href="{% url 'blog_detail' post.slug %}">
+                                <i class="fas fa-bookmark"></i>
+                                {{ post.title }}
+                            </a>
+                        </h2>
                         <div class="favorite-meta">
-                            <span>By {{ post.author.name }}</span>
+                            <span>By <a href="{% url 'author_detail' post.author.slug %}">{{ post.author.name }}</a></span>
                             <span>•</span>
                             <span>{{ post.created_at|date:"F j, Y" }}</span>
                         </div>
-                        <div class="favorite-excerpt">
-                            {{ post.content|truncatewords:50 }}
+                        <p class="favorite-excerpt">{{ post.content|truncatewords:30 }}</p>
+                        <div class="favorite-category">
+                            <a href="{% url 'blog_list' %}?category={{ post.category }}">{{ post.category }}</a>
                         </div>
-                        <div class="favorite-footer">
-                            <span class="category">{{ post.category }}</span>
-                            <a href="{% url 'blog_detail' post.slug %}" class="read-more">Read More</a>
-                        </div>
+                        <a href="{% url 'blog_detail' post.slug %}" class="read-more">Read More</a>
                     </div>
                 </article>
             {% endfor %}
         </div>
     {% else %}
         <div class="no-favorites">
-            <p>You haven't saved any posts yet.</p>
-            <a href="{% url 'blog_list' %}" class="browse-button">Browse Posts</a>
+            <i class="fas fa-bookmark"></i>
+            <p>You haven't saved any posts to your favorites yet.</p>
+            <a href="{% url 'blog_list' %}" class="browse-posts">Browse Posts</a>
         </div>
     {% endif %}
 </div>
@@ -55,11 +58,14 @@
         color: #2c3e50;
         font-size: 2.5rem;
         margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
     }
 
-    .favorites-header p {
-        color: #666;
-        font-size: 1.2rem;
+    .favorites-header h1 i {
+        color: #ffd700;
     }
 
     .favorites-grid {
@@ -69,80 +75,129 @@
 
     .favorite-card {
         background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         overflow: hidden;
-        transition: transform 0.3s;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
     }
 
     .favorite-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     }
 
     .favorite-content {
         padding: 2rem;
     }
 
-    .favorite-content h2 {
+    .favorite-title {
         margin: 0 0 1rem 0;
         font-size: 1.8rem;
+        line-height: 1.4;
     }
 
-    .favorite-content h2 a {
+    .favorite-title a {
         color: #2c3e50;
         text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        transition: all 0.3s ease;
     }
 
-    .favorite-content h2 a:hover {
+    .favorite-title a i {
+        color: #ffd700;
+        font-size: 1.4rem;
+        transition: transform 0.3s ease;
+    }
+
+    .favorite-title a:hover {
         color: #3498db;
+    }
+
+    .favorite-title a:hover i {
+        transform: scale(1.1);
     }
 
     .favorite-meta {
         color: #666;
         font-size: 0.9rem;
         margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
-    .favorite-meta span {
-        margin-right: 0.5rem;
+    .favorite-meta a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .favorite-meta a:hover {
+        text-decoration: underline;
     }
 
     .favorite-excerpt {
         color: #444;
         line-height: 1.6;
         margin-bottom: 1.5rem;
+        font-size: 1.1rem;
     }
 
-    .favorite-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .favorite-category {
+        margin-bottom: 1.5rem;
     }
 
-    .category {
-        background: #f0f0f0;
-        padding: 0.3rem 0.8rem;
-        border-radius: 4px;
+    .favorite-category a {
+        display: inline-block;
+        background: #f8f9fa;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        color: #3498db;
+        text-decoration: none;
         font-size: 0.9rem;
-        color: #666;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+
+    .favorite-category a:hover {
+        background: #e9ecef;
+        color: #2980b9;
+        transform: translateY(-1px);
     }
 
     .read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         color: #3498db;
         text-decoration: none;
         font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: all 0.3s ease;
     }
 
     .read-more:hover {
-        text-decoration: underline;
+        background: #f8f9fa;
+        color: #2980b9;
     }
 
     .no-favorites {
         text-align: center;
         padding: 4rem 2rem;
         background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px dashed #e9ecef;
+    }
+
+    .no-favorites i {
+        font-size: 3rem;
+        color: #ffd700;
+        margin-bottom: 1.5rem;
     }
 
     .no-favorites p {
@@ -151,18 +206,22 @@
         margin-bottom: 1.5rem;
     }
 
-    .browse-button {
-        display: inline-block;
+    .browse-posts {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         padding: 0.8rem 1.5rem;
         background: #3498db;
         color: white;
         text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 500;
     }
 
-    .browse-button:hover {
+    .browse-posts:hover {
         background: #2980b9;
+        transform: translateY(-2px);
     }
 </style>
 {% endblock %} 

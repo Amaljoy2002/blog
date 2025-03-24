@@ -129,6 +129,78 @@
     .comments-header h2 {
         font-size: 2rem;
         color: #333;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .comments-header h2 i {
+        color: #007bff;
+    }
+
+    .comment-form {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .comment-form h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .comment-form h3 i {
+        color: #007bff;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        resize: vertical;
+        min-height: 100px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+    }
+
+    .submit-button {
+        background: #007bff;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .submit-button:hover {
+        background: #0056b3;
+        transform: translateY(-1px);
+    }
+
+    .submit-button i {
+        font-size: 1.1rem;
     }
 
     .comments-list {
@@ -138,9 +210,14 @@
     }
 
     .comment-item {
-        padding: 2rem;
+        padding: 1.5rem;
         border-bottom: 1px solid #eee;
         width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+    .comment-item:hover {
+        background-color: #f8f9fa;
     }
 
     .comment-item:last-child {
@@ -150,165 +227,129 @@
     .comment-header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 1rem;
         width: 100%;
     }
 
     .comment-author {
-        font-weight: bold;
-        color: #333;
+        font-weight: 600;
+        color: #2c3e50;
         font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .comment-author i {
+        color: #007bff;
     }
 
     .comment-date {
-        color: #666;
-        font-size: 1rem;
+        color: #6c757d;
+        font-size: 0.9rem;
     }
 
     .comment-content {
         color: #444;
         line-height: 1.7;
         font-size: 1.1rem;
+        padding-left: 2rem;
+        position: relative;
+    }
+
+    .comment-content::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e9ecef;
+        border-radius: 2px;
     }
 
     .no-comments {
         text-align: center;
-        color: #666;
+        color: #6c757d;
         padding: 3rem;
         font-size: 1.2rem;
-    }
-
-    .like-section {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        margin-top: 1.5rem;
-        width: 100%;
-    }
-
-    .like-button, .dislike-button, .bookmark-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.7rem;
-        padding: 0.7rem 1.5rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-size: 1rem;
-    }
-
-    .like-button {
-        background-color: #e8f5e9;
-        color: #2e7d32;
-    }
-
-    .like-button:hover {
-        background-color: #c8e6c9;
-    }
-
-    .like-button.active {
-        background-color: #2e7d32;
-        color: white;
-    }
-
-    .dislike-button {
-        background-color: #ffebee;
-        color: #c62828;
-    }
-
-    .dislike-button:hover {
-        background-color: #ffcdd2;
-    }
-
-    .dislike-button.active {
-        background-color: #c62828;
-        color: white;
-    }
-
-    .bookmark-button {
-        background-color: #fff3e0;
-        color: #f57c00;
-    }
-
-    .bookmark-button:hover {
-        background-color: #ffe0b2;
-    }
-
-    .bookmark-button.active {
-        background-color: #f57c00;
-        color: white;
-    }
-
-    .like-count, .dislike-count, .bookmark-count {
-        font-size: 1rem;
-        color: #666;
-    }
-
-    .like-section .icon {
-        font-size: 1.4rem;
-    }
-
-    .comment-form {
-        background: white;
-        padding: 2rem;
+        background: #f8f9fa;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 2rem;
+        border: 1px dashed #e9ecef;
     }
 
-    .comment-form h3 {
-        color: #2c3e50;
-        margin-bottom: 1.5rem;
-        font-size: 1.5rem;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #2c3e50;
-        font-weight: 500;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-    }
-
-    .form-group textarea {
-        min-height: 150px;
-        resize: vertical;
-    }
-
-    .submit-button {
-        background: #3498db;
-        color: white;
-        padding: 0.8rem 1.5rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s;
-    }
-
-    .submit-button:hover {
-        background: #2980b9;
+    .no-comments i {
+        font-size: 2rem;
+        color: #007bff;
+        margin-bottom: 1rem;
     }
 
     .login-prompt {
         text-align: center;
         padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px dashed #e9ecef;
+        color: #6c757d;
+    }
+
+    .login-prompt a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-prompt a:hover {
+        text-decoration: underline;
+    }
+
+    .blog-actions {
+        display: flex;
+        gap: 1.5rem;
+        margin: 2rem 0;
+        padding: 1rem;
         background: white;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: #666;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+    }
+
+    .action-button:hover {
+        background: #f8f9fa;
+    }
+
+    .action-button i {
+        font-size: 1.3rem;
+    }
+
+    .action-button.liked i {
+        color: #e91e63;
+    }
+
+    .action-button.disliked i {
+        color: #f44336;
+    }
+
+    .action-button.favorited i {
+        color: #ffd700;
+    }
+
+    .action-count {
+        font-size: 0.9rem;
         color: #666;
     }
 
@@ -360,37 +401,46 @@
             {{ post.content|linebreaks }}
         </div>
 
+        <div class="blog-actions">
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'like_post' post.slug %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-button {% if user_like and user_like.is_like %}liked{% endif %}">
+                        <i class="{% if user_like and user_like.is_like %}fas{% else %}far{% endif %} fa-heart"></i>
+                        <span class="action-count">{{ likes_count }}</span>
+                    </button>
+                </form>
+
+                <form method="post" action="{% url 'dislike_post' post.slug %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-button {% if user_like and not user_like.is_like %}disliked{% endif %}">
+                        <i class="{% if user_like and not user_like.is_like %}fas{% else %}far{% endif %} fa-thumbs-down"></i>
+                        <span class="action-count">{{ dislikes_count }}</span>
+                    </button>
+                </form>
+
+                <form method="post" action="{% url 'toggle_favorite' post.slug %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-button {% if is_favorite %}favorited{% endif %}">
+                        <i class="{% if is_favorite %}fas{% else %}far{% endif %} fa-bookmark"></i>
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="action-button">
+                    <i class="far fa-heart"></i>
+                    <span class="action-count">{{ likes_count }}</span>
+                </a>
+                <a href="{% url 'login' %}" class="action-button">
+                    <i class="far fa-thumbs-down"></i>
+                    <span class="action-count">{{ dislikes_count }}</span>
+                </a>
+                <a href="{% url 'login' %}" class="action-button">
+                    <i class="far fa-bookmark"></i>
+                </a>
+            {% endif %}
+        </div>
+
         <footer class="blog-footer">
-            <div class="like-section">
-                {% if user.is_authenticated %}
-                    <button class="like-button {% if user_like and user_like.is_like %}active{% endif %}" 
-                            onclick="toggleLike('{{ post.slug }}')">
-                        <i class="fas fa-thumbs-up icon"></i>
-                        <span class="like-count">{{ post.like_count }}</span>
-                    </button>
-                    <button class="dislike-button {% if user_like and not user_like.is_like %}active{% endif %}"
-                            onclick="toggleDislike('{{ post.slug }}')">
-                        <i class="fas fa-thumbs-down icon"></i>
-                        <span class="dislike-count">{{ post.dislike_count }}</span>
-                    </button>
-                    <button class="bookmark-button {% if is_bookmarked %}active{% endif %}"
-                            onclick="toggleBookmark('{{ post.slug }}')">
-                        <i class="fas fa-bookmark icon"></i>
-                    </button>
-                {% else %}
-                    <a href="{% url 'login' %}" class="like-button">
-                        <i class="fas fa-thumbs-up icon"></i>
-                        <span class="like-count">{{ post.like_count }}</span>
-                    </a>
-                    <a href="{% url 'login' %}" class="dislike-button">
-                        <i class="fas fa-thumbs-down icon"></i>
-                        <span class="dislike-count">{{ post.dislike_count }}</span>
-                    </a>
-                    <a href="{% url 'login' %}" class="bookmark-button">
-                        <i class="fas fa-bookmark icon"></i>
-                    </a>
-                {% endif %}
-            </div>
             <a href="#comments" class="comment-button">
                 <i class="fas fa-comments"></i> Add a Comment
             </a>
@@ -399,20 +449,23 @@
 
     <section id="comments" class="comments-section">
         <header class="comments-header">
-            <h2>Comments</h2>
+            <h2><i class="fas fa-comments"></i> Comments</h2>
         </header>
 
         {% if user.is_authenticated %}
             <form method="post" action="{% url 'add_comment' post.slug %}" class="comment-form">
                 {% csrf_token %}
-                <h3>Add a Comment</h3>
+                <h3><i class="fas fa-pen"></i> Add a Comment</h3>
                 <div class="form-group">
                     <textarea name="content" rows="4" placeholder="Write your comment here..." required></textarea>
                 </div>
-                <button type="submit" class="submit-button">Post Comment</button>
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-paper-plane"></i> Post Comment
+                </button>
             </form>
         {% else %}
             <div class="login-prompt">
+                <i class="fas fa-user-lock"></i>
                 <p>Please <a href="{% url 'login' %}">login</a> to leave a comment.</p>
             </div>
         {% endif %}
@@ -422,7 +475,10 @@
                 {% for comment in comments %}
                     <li class="comment-item">
                         <div class="comment-header">
-                            <span class="comment-author">{{ comment.author.username }}</span>
+                            <span class="comment-author">
+                                <i class="fas fa-user-circle"></i>
+                                {{ comment.author.username }}
+                            </span>
                             <span class="comment-date">{{ comment.created_at|date:"F j, Y" }}</span>
                         </div>
                         <div class="comment-content">
@@ -432,76 +488,11 @@
                 {% endfor %}
             {% else %}
                 <li class="no-comments">
+                    <i class="fas fa-comment-slash"></i>
                     <p>No comments yet. Be the first to comment!</p>
                 </li>
             {% endif %}
         </ul>
     </section>
 </div>
-
-<script>
-    function toggleLike(slug) {
-        fetch(`/blog/post/${slug}/like/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.querySelector('.like-count').textContent = data.like_count;
-            document.querySelector('.dislike-count').textContent = data.dislike_count;
-            const likeButton = document.querySelector('.like-button');
-            const dislikeButton = document.querySelector('.dislike-button');
-            
-            if (data.is_liked) {
-                likeButton.classList.add('active');
-                dislikeButton.classList.remove('active');
-            } else {
-                likeButton.classList.remove('active');
-            }
-        });
-    }
-
-    function toggleDislike(slug) {
-        fetch(`/blog/post/${slug}/dislike/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.querySelector('.like-count').textContent = data.like_count;
-            document.querySelector('.dislike-count').textContent = data.dislike_count;
-            const likeButton = document.querySelector('.like-button');
-            const dislikeButton = document.querySelector('.dislike-button');
-            
-            if (data.is_disliked) {
-                dislikeButton.classList.add('active');
-                likeButton.classList.remove('active');
-            } else {
-                dislikeButton.classList.remove('active');
-            }
-        });
-    }
-
-    function toggleBookmark(slug) {
-        fetch(`/blog/post/${slug}/bookmark/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            const bookmarkButton = document.querySelector('.bookmark-button');
-            if (data.is_bookmarked) {
-                bookmarkButton.classList.add('active');
-            } else {
-                bookmarkButton.classList.remove('active');
-            }
-        });
-    }
-</script>
 {% endblock %} 

@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.urls import reverse
 from django.http import JsonResponse
 from django.db.models import Q
-from .models import BlogPost, Author, Comment, Like, Bookmark, Profile
+from .models import BlogPost, Author, Comment, Like, Bookmark, Profile, Favorite
 from .forms import CustomUserCreationForm, CommentForm
 
 def get_base_context():
@@ -62,25 +62,30 @@ def author_detail(request, slug):
 
 def blog_detail(request, slug):
     post = get_object_or_404(BlogPost, slug=slug)
-    comments = post.comments.all().order_by('-created_at')
+    comments = post.comments.all()
+    categories = BlogPost.objects.values_list('category', flat=True).distinct()
+    authors = Author.objects.all()
     
-    # Get user's like status if logged in
+    # Get user's like/dislike status
     user_like = None
+    is_favorite = False
     if request.user.is_authenticated:
         user_like = Like.objects.filter(user=request.user, post=post).first()
+        is_favorite = Favorite.objects.filter(user=request.user, post=post).exists()
     
-    # Get user's bookmark status if logged in
-    is_bookmarked = False
-    if request.user.is_authenticated:
-        is_bookmarked = Bookmark.objects.filter(user=request.user, post=post).exists()
+    # Get counts
+    likes_count = post.like_count
+    dislikes_count = post.dislike_count
     
     context = {
         'post': post,
         'comments': comments,
+        'categories': categories,
+        'authors': authors,
         'user_like': user_like,
-        'is_bookmarked': is_bookmarked,
-        'categories': BlogPost.objects.values_list('category', flat=True).distinct(),
-        'authors': Author.objects.all(),
+        'is_favorite': is_favorite,
+        'likes_count': likes_count,
+        'dislikes_count': dislikes_count,
     }
     return render(request, 'blog_detail.html', context)
 
@@ -291,32 +296,85 @@ def add_comment(request, slug):
 @login_required
 def profile(request):
     if request.method == 'POST':
-        # Update user fields
-        user = request.user
-        user.first_name = request.POST.get('first_name', '')
-        user.last_name = request.POST.get('last_name', '')
-        user.email = request.POST.get('email', '')
-        user.save()
-
-        # Update profile fields
-        profile, created = Profile.objects.get_or_create(user=user)
-        profile.bio = request.POST.get('bio', '')
-        profile.location = request.POST.get('location', '')
-        profile.website = request.POST.get('website', '')
+        # Update user information
+        request.user.first_name = request.POST.get('first_name')
+        request.user.last_name = request.POST.get('last_name')
+        request.user.email = request.POST.get('email')
+        request.user.save()
+        
+        # Update profile information
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        profile.bio = request.POST.get('bio')
+        profile.location = request.POST.get('location')
+        profile.website = request.POST.get('website')
         profile.save()
-
-        messages.success(request, 'Your profile has been updated successfully!')
+        
+        messages.success(request, 'Profile updated successfully!')
         return redirect('profile')
-
-   
+    
+    # Get or create profile
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
+    context = {
+        'profile': profile,
+        'categories': BlogPost.objects.values_list('category', flat=True).distinct(),
+        'authors': Author.objects.all(),
+    }
     return render(request, 'profile.html', context)
 
 @login_required
 def favorites(request):
-    bookmarked_posts = BlogPost.objects.filter(bookmark__user=request.user).order_by('-bookmark__created_at')
+    favorite_posts = BlogPost.objects.filter(favorite__user=request.user).order_by('-favorite__created_at')
     context = {
-        'bookmarked_posts': bookmarked_posts,
+        'favorite_posts': favorite_posts,
         'categories': BlogPost.objects.values_list('category', flat=True).distinct(),
         'authors': Author.objects.all(),
     }
-    return render(request, 'favorites.html', context) 
+    return render(request, 'favorites.html', context)
+
+@login_required
+def like_post(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    
+    if not created:
+        if like.is_like:
+            like.delete()
+        else:
+            like.is_like = True
+            like.save()
+    else:
+        like.is_like = True
+        like.save()
+    
+    return redirect('blog_detail', slug=slug)
+
+@login_required
+def dislike_post(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    
+    if not created:
+        if not like.is_like:
+            like.delete()
+        else:
+            like.is_like = False
+            like.save()
+    else:
+        like.is_like = False
+        like.save()
+    
+    return redirect('blog_detail', slug=slug)
+
+@login_required
+def toggle_favorite(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, post=post)
+    
+    if not created:
+        favorite.delete()
+        messages.success(request, 'Post removed from favorites.')
+    else:
+        messages.success(request, 'Post added to favorites.')
+    
+    return redirect('blog_detail', slug=slug) 
