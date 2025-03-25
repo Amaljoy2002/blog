@@ -71,6 +71,7 @@
     .favorites-grid {
         display: grid;
         gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
 
     .favorite-card {
@@ -80,6 +81,9 @@
         overflow: hidden;
         transition: all 0.3s ease;
         border: 1px solid #e9ecef;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .favorite-card:hover {
@@ -89,6 +93,9 @@
 
     .favorite-content {
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
     }
 
     .favorite-title {
@@ -127,6 +134,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        flex-wrap: wrap;
     }
 
     .favorite-meta a {
@@ -144,6 +152,7 @@
         line-height: 1.6;
         margin-bottom: 1.5rem;
         font-size: 1.1rem;
+        flex: 1;
     }
 
     .favorite-category {
@@ -178,6 +187,7 @@
         padding: 0.5rem 1rem;
         border-radius: 4px;
         transition: all 0.3s ease;
+        margin-top: auto;
     }
 
     .read-more:hover {
@@ -222,6 +232,89 @@
     .browse-posts:hover {
         background: #2980b9;
         transform: translateY(-2px);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+        .favorites-container {
+            padding: 0 1.5rem;
+        }
+        
+        .favorites-grid {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .favorites-container {
+            padding: 0 1rem;
+        }
+        
+        .favorites-header h1 {
+            font-size: 2rem;
+        }
+        
+        .favorites-grid {
+            grid-template-columns: 1fr;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .favorite-content {
+            padding: 1.5rem;
+        }
+        
+        .favorite-title {
+            font-size: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .favorites-container {
+            padding: 0 0.5rem;
+            margin: 1rem auto;
+        }
+        
+        .favorites-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .favorites-header h1 {
+            font-size: 1.75rem;
+        }
+        
+        .favorite-content {
+            padding: 1.25rem;
+        }
+        
+        .favorite-title {
+            font-size: 1.3rem;
+        }
+        
+        .favorite-title a i {
+            font-size: 1.2rem;
+        }
+        
+        .favorite-excerpt {
+            font-size: 1rem;
+        }
+        
+        .no-favorites {
+            padding: 2rem 1rem;
+        }
+        
+        .no-favorites i {
+            font-size: 2.5rem;
+        }
+        
+        .no-favorites p {
+            font-size: 1.1rem;
+        }
+        
+        .browse-posts {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 {% endblock %} 

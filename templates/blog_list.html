@@ -3,6 +3,7 @@
 {% block title %}Blog Posts{% endblock %}
 
 {% block extra_style %}
+<style>
 .blog-container {
     display: grid;
     grid-template-columns: 1fr 300px;
@@ -17,9 +18,22 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.blog-list h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
 .blog-item {
     padding: 1.5rem 0;
     border-bottom: 1px solid #eee;
+    transition: transform 0.3s ease;
+}
+
+.blog-item:hover {
+    transform: translateX(5px);
 }
 
 .blog-item:last-child {
@@ -28,12 +42,14 @@
 
 .blog-item h2 {
     margin-bottom: 0.5rem;
+    font-size: 1.8rem;
 }
 
 .blog-item h2 a {
     color: #2c3e50;
     text-decoration: none;
     transition: color 0.3s;
+    display: block;
 }
 
 .blog-item h2 a:hover {
@@ -43,15 +59,45 @@
 .blog-meta {
     color: #666;
     font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .blog-meta a {
     color: #3498db;
     text-decoration: none;
+    font-weight: 500;
 }
 
 .blog-meta a:hover {
     text-decoration: underline;
+}
+
+.blog-excerpt {
+    margin-top: 1rem;
+    color: #444;
+    line-height: 1.6;
+}
+
+.blog-category {
+    display: inline-block;
+    background: #f8f9fa;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    color: #3498db;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.blog-category:hover {
+    background: #e9ecef;
+    color: #2980b9;
+    transform: translateY(-1px);
 }
 
 .sidebar {
@@ -60,6 +106,8 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     height: fit-content;
+    position: sticky;
+    top: 2rem;
 }
 
 .sidebar h3 {
@@ -67,29 +115,37 @@
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #3498db;
+    font-size: 1.3rem;
 }
 
 .sidebar ul {
     list-style: none;
+    padding: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
 }
 
 .sidebar ul li a {
     color: #666;
     text-decoration: none;
-    transition: color 0.3s;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 4px;
 }
 
 .sidebar ul li a:hover {
     color: #3498db;
+    background: #f8f9fa;
+    padding-left: 0.8rem;
 }
 
 .pagination {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 2rem;
 }
@@ -101,6 +157,8 @@
     color: #666;
     text-decoration: none;
     transition: all 0.3s;
+    min-width: 2.5rem;
+    text-align: center;
 }
 
 .pagination a:hover {
@@ -115,45 +173,128 @@
     border-color: #3498db;
 }
 
+.empty-message {
+    padding: 3rem;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #666;
+    font-size: 1.2rem;
+    border: 1px dashed #e9ecef;
+    margin: 2rem 0;
+}
+
+.empty-message i {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+@media (max-width: 992px) {
+    .blog-container {
+        grid-template-columns: 1fr 250px;
+        gap: 1.5rem;
+    }
+    
+    .blog-list {
+        padding: 1.5rem;
+    }
+    
+    .sidebar {
+        padding: 1.5rem;
+    }
+    
+    .blog-item h2 {
+        font-size: 1.6rem;
+    }
+}
+
 @media (max-width: 768px) {
     .blog-container {
         grid-template-columns: 1fr;
     }
+    
+    .sidebar {
+        position: static;
+        margin-bottom: 2rem;
+    }
+    
+    .blog-list h1 {
+        font-size: 2rem;
+    }
 }
+
+@media (max-width: 480px) {
+    .blog-list {
+        padding: 1rem;
+    }
+    
+    .blog-item {
+        padding: 1.2rem 0;
+    }
+    
+    .blog-item h2 {
+        font-size: 1.4rem;
+    }
+    
+    .sidebar {
+        padding: 1.2rem;
+    }
+    
+    .pagination a, .pagination span {
+        padding: 0.4rem 0.8rem;
+        min-width: 2.2rem;
+    }
+    
+    .blog-list h1 {
+        font-size: 1.75rem;
+    }
+}
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="blog-container">
     <div class="blog-list">
-        <h1>Blog Posts</h1>
+        <h1>Blog Posts{% if request.GET.category %}: {{ request.GET.category }}{% endif %}</h1>
+        
         {% for post in posts %}
         <article class="blog-item">
             <h2><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h2>
             <div class="blog-meta">
-                Posted on {{ post.created_at|date:"F j, Y" }} by 
-                <a href="{% url 'author_detail' post.author.slug %}">{{ post.author.name }}</a>
+                <span>By <a href="{% url 'author_detail' post.author.slug %}">{{ post.author.name }}</a></span>
+                <span>•</span>
+                <span>{{ post.created_at|date:"F j, Y" }}</span>
+                <a href="{% url 'blog_list' %}?category={{ post.category }}" class="blog-category">{{ post.category }}</a>
+            </div>
+            <div class="blog-excerpt">
+                {{ post.content|truncatewords:30 }}
             </div>
         </article>
         {% empty %}
-        <p>No blog posts found.</p>
+        <div class="empty-message">
+            <i class="fas fa-search"></i>
+            <p>No blog posts found. {% if request.GET.category %}Try looking in a different category.{% endif %}</p>
+        </div>
         {% endfor %}
 
         {% if posts.has_other_pages %}
         <div class="pagination">
             {% if posts.has_previous %}
-            <a href="?page={{ posts.previous_page_number }}">&laquo; Previous</a>
+            <a href="?page={{ posts.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">&laquo;</a>
             {% endif %}
 
             {% for num in posts.paginator.page_range %}
                 {% if posts.number == num %}
                 <span class="current">{{ num }}</span>
                 {% else %}
-                <a href="?page={{ num }}">{{ num }}</a>
+                <a href="?page={{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">{{ num }}</a>
                 {% endif %}
             {% endfor %}
 
             {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}">Next &raquo;</a>
+            <a href="?page={{ posts.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">&raquo;</a>
             {% endif %}
         </div>
         {% endif %}
@@ -162,16 +303,9 @@
     <aside class="sidebar">
         <h3>Categories</h3>
         <ul>
-            <li><a href="{% url 'blog_list' %}?category=technology">Technology</a></li>
-            <li><a href="{% url 'blog_list' %}?category=lifestyle">Lifestyle</a></li>
-            <li><a href="{% url 'blog_list' %}?category=travel">Travel</a></li>
-            <li><a href="{% url 'blog_list' %}?category=food">Food</a></li>
-        </ul>
-
-        <h3>Recent Posts</h3>
-        <ul>
-            {% for post in recent_posts %}
-            <li><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></li>
+            <li><a href="{% url 'blog_list' %}" {% if not request.GET.category %}style="color: #3498db; font-weight: bold;"{% endif %}>All Categories</a></li>
+            {% for category in categories %}
+                <li><a href="{% url 'blog_list' %}?category={{ category }}" {% if request.GET.category == category %}style="color: #3498db; font-weight: bold;"{% endif %}>{{ category }}</a></li>
             {% endfor %}
         </ul>
 

@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A modern blog sharing knowledge and ideas">
+    <meta name="theme-color" content="#2c3e50">
     <title>{% block title %}Welcome to My Blog{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -25,9 +27,10 @@
         }
 
         .container {
+            width: 92%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
         }
 
         header {
@@ -39,13 +42,13 @@
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             margin-bottom: 1rem;
         }
 
         .nav-container {
             background-color: #34495e;
-            padding: 1rem 0;
+            padding: 0.5rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -57,19 +60,29 @@
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
         }
 
         .nav-search {
             display: flex;
             align-items: center;
-            margin-left: 2rem;
+            margin-left: 1rem;
         }
 
         .nav-search form {
@@ -157,12 +170,13 @@
 
         .cta-button {
             display: inline-block;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             background-color: #3498db;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s;
+            text-align: center;
         }
 
         .cta-button:hover {
@@ -171,13 +185,21 @@
 
         main {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
         footer {
             background-color: #2c3e50;
             color: white;
             padding: 3rem 0 1rem;
-            margin-top: auto;
+            margin-top: 2rem;
         }
 
         .footer-content {
@@ -245,11 +267,19 @@
         }
 
         .sidebar {
+            flex: 0 0 25%;
+            min-width: 250px;
             background: white;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .content-area {
+            flex: 1;
         }
 
         .categories h3 {
@@ -286,6 +316,127 @@
             transform: translateX(5px);
         }
 
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .container {
+                width: 95%;
+                padding: 0.75rem;
+            }
+            
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: 0 0 100%;
+                min-width: auto;
+                margin-bottom: 2rem;
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-search {
+                display: none;
+            }
+            
+            .nav-content {
+                flex-wrap: wrap;
+            }
+            
+            .nav-links {
+                flex-basis: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            .nav-links.show {
+                max-height: 500px;
+            }
+            
+            .nav-links a, .dropdown {
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .dropdown-content {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+                padding-left: 1rem;
+            }
+            
+            .dropdown:hover .dropdown-content {
+                display: none;
+            }
+            
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+            
+            .nav-auth {
+                margin-left: auto;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-search {
+                display: flex;
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .mobile-search form {
+                display: flex;
+                width: 100%;
+            }
+
+            .mobile-search input {
+                flex: 1;
+                padding: 0.5rem;
+                border: none;
+                border-radius: 4px 0 0 4px;
+            }
+
+            .mobile-search button {
+                padding: 0.5rem 1rem;
+                border: none;
+                border-radius: 0 4px 4px 0;
+                background: #3498db;
+                color: white;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .container {
+                width: 100%;
+                padding: 0.5rem;
+            }
+            
+            .nav-auth .cta-button {
+                padding: 0.3rem 0.7rem;
+                font-size: 0.8rem;
+            }
+
+            .cta-button {
+                padding: 0.5rem 1rem;
+            }
+        }
+
         {% block extra_style %}{% endblock %}
     </style>
     {% block extra_head %}{% endblock %}
@@ -300,27 +451,10 @@
 
     <nav class="nav-container">
         <div class="nav-content">
-            <div class="nav-links">
-                <a href="{% url 'home' %}" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
-                <a href="{% url 'blog_list' %}" {% if 'blog/blogs/' in request.path %}class="active"{% endif %}>Blog Posts</a>
-                <div class="dropdown">
-                    <a href="#" {% if 'blog/blogger/' in request.path or 'blog/bloggers/' in request.path %}class="active"{% endif %}>Bloggers</a>
-                    <div class="dropdown-content">
-                        <a href="{% url 'blogger_list' %}">All Bloggers</a>
-                        {% for author in authors %}
-                            <a href="{% url 'author_detail' author.slug %}">{{ author.name }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <a href="{% url 'about' %}" {% if '/about/' in request.path %}class="active"{% endif %}>About</a>
-                <a href="{% url 'contact' %}" {% if '/contact/' in request.path %}class="active"{% endif %}>Contact</a>
-                <div class="nav-search">
-                    <form action="{% url 'search' %}" method="GET">
-                        <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}">
-                        <button type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <div class="nav-auth">
                 {% if user.is_authenticated %}
                     <div class="dropdown">
@@ -336,22 +470,54 @@
                     <a href="{% url 'signup' %}" class="cta-button">Sign Up</a>
                 {% endif %}
             </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'home' %}" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
+                <a href="{% url 'blog_list' %}" {% if 'blog/blogs/' in request.path %}class="active"{% endif %}>Blog Posts</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" {% if 'blog/blogger/' in request.path or 'blog/bloggers/' in request.path %}class="active"{% endif %}>Bloggers</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'blogger_list' %}">All Bloggers</a>
+                        {% for author in authors %}
+                            <a href="{% url 'author_detail' author.slug %}">{{ author.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <a href="{% url 'about' %}" {% if '/about/' in request.path %}class="active"{% endif %}>About</a>
+                <a href="{% url 'contact' %}" {% if '/contact/' in request.path %}class="active"{% endif %}>Contact</a>
+                <div class="mobile-search">
+                    <form action="{% url 'search' %}" method="GET">
+                        <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="nav-search">
+                    <form action="{% url 'search' %}" method="GET">
+                        <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </nav>
 
     <main class="container">
-        <aside class="sidebar">
-            <div class="categories">
-                <h3>Categories</h3>
-                <ul>
-                    <li><a href="{% url 'blog_list' %}?category=technology">Technology</a></li>
-                    <li><a href="{% url 'blog_list' %}?category=lifestyle">Lifestyle</a></li>
-                    <li><a href="{% url 'blog_list' %}?category=travel">Travel</a></li>
-                    <li><a href="{% url 'blog_list' %}?category=food">Food</a></li>
-                </ul>
+        <div class="main-layout">
+            <aside class="sidebar">
+                <div class="categories">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="{% url 'blog_list' %}?category=technology">Technology</a></li>
+                        <li><a href="{% url 'blog_list' %}?category=lifestyle">Lifestyle</a></li>
+                        <li><a href="{% url 'blog_list' %}?category=travel">Travel</a></li>
+                        <li><a href="{% url 'blog_list' %}?category=food">Food</a></li>
+                    </ul>
+                </div>
+            </aside>
+            <div class="content-area">
+                {% block content %}{% endblock %}
             </div>
-        </aside>
-        {% block content %}{% endblock %}
+        </div>
     </main>
 
     <footer>
@@ -371,12 +537,12 @@
             </div>
             
             <div class="footer-section">
-                <h3>Connect sWith Us</h3>
+                <h3>Connect With Us</h3>
                 <ul>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
                 </ul>
             </div>
         </div>
@@ -384,5 +550,31 @@
             <p>&copy; 2024 My Blog. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+                this.innerHTML = navLinks.classList.contains('show') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            if (window.innerWidth <= 768) {
+                const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+                dropdownToggles.forEach(toggle => {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const dropdown = this.parentNode;
+                        dropdown.classList.toggle('active');
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html> 

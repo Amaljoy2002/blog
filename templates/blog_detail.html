@@ -306,6 +306,7 @@
 
     .blog-actions {
         display: flex;
+        flex-wrap: wrap;
         gap: 1.5rem;
         margin: 2rem 0;
         padding: 1rem;
@@ -378,6 +379,101 @@
         background: #007bff;
         color: white;
         border-color: #007bff;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+        .blog-detail, .comments-section {
+            width: 100%;
+        }
+        
+        .blog-content, .comments-section {
+            padding: 1.5rem;
+        }
+        
+        .blog-header h1 {
+            font-size: 2.2rem;
+        }
+        
+        .comments-header h2 {
+            font-size: 1.8rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .blog-content, .comments-section {
+            padding: 1.25rem;
+        }
+        
+        .blog-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .blog-body {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .blog-meta {
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .comment-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .comment-content {
+            padding-left: 1rem;
+        }
+        
+        .blog-actions {
+            justify-content: center;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .blog-content, .comments-section {
+            padding: 1rem;
+        }
+        
+        .blog-header h1 {
+            font-size: 1.6rem;
+        }
+        
+        .blog-body {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .comments-header h2 {
+            font-size: 1.4rem;
+        }
+        
+        .comment-button {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .action-button {
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .action-button i {
+            font-size: 1.1rem;
+        }
+        
+        .comment-content {
+            font-size: 1rem;
+        }
+        
+        .submit-button {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 {% endblock %}
